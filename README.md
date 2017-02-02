@@ -15,3 +15,29 @@ We believe technology is a game changer, specially in education domain. It can h
  * Title                : Simple Institute Management (SIM)
  * Version              : 1.0
  * License              : Licensed under MIT <http://opensource.org/licenses/MIT>
+
+<hr />
+
+Detfault Access:
+ - Username: admin
+ - Password: admin
+
+<hr />
+
+Platform:
+ - SQL Server 2012
+ - Microsoft Visual Studio 2013
+ - .NET Framework 4.5 and ASP.NET MVC5
+
+<hr />
+
+Services:
+ - One user based fully dynamic website and management system.
+ - Teacher, Student, Department, Classroom, Course and Settings.
+ - Dynamic home, about and contact page.
+ - Dynamic favicon and logo.
+ - Fully secured.
+
+<hr />
+
+Happy Coding.
