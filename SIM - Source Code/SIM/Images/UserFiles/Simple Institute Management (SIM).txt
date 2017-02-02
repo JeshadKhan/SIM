@@ -1,0 +1,6 @@
+Application Name	: Simple Institute Management (SIM)
+Developed By		: Jeshad Khan
+
+
+
+Hello!

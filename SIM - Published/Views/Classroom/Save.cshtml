@@ -1,0 +1,51 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    Classroom classroom = ViewBag.Classroom;
+
+    if (classroom != null)
+    {
+        ViewBag.Title = "Update Classroom";
+    }
+    else
+    {
+        ViewBag.Title = "Save Classroom";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (classroom != null){ @("Update");}else{ @("Save");} Classroom</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="RoomNo" class="col-lg-2 control-label">Room No</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="RoomNo" name="RoomNo" placeholder="Room No" type="text" value="@if (classroom != null){ @classroom.RoomNo;}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (classroom != null){ @("Update");}else{ @("Save");}</button>
+                </div>
+            </div>
+            @if (classroom != null) { @Html.Hidden("EId", Security.Encrypt(@classroom.RoomNo.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>

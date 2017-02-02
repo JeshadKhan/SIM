@@ -1,0 +1,78 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    Department dept = ViewBag.Department;
+    
+    if(dept !=null)
+    {
+        ViewBag.Title = "Update Department";
+    }
+    else
+    {
+        ViewBag.Title = "Save Department";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (dept != null){ @("Update");}else{ @("Save");} Department</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="Code" class="col-lg-2 control-label">Code</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Code" name="Code" placeholder="Code" type="text" value="@if (dept != null){ @dept.Code;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CodeErrorMessage)){ @ViewBag.CodeErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Name" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Name" name="Name" placeholder="Name" type="text" value="@if (dept != null){ @dept.Name;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.NameErrorMessage)){ @ViewBag.NameErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (dept != null){ @("Update");}else{ @("Save");}</button>
+                </div>
+            </div>
+            @if (dept != null) { @Html.Hidden("EId", Security.Encrypt(@dept.Id.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myForm").validate({
+                rules: {
+                    Code: "required",
+                    Name: "required"
+                },
+
+                messages: {
+                    Code: "Please provide code.",
+                    Name: "Please provide name."
+                }
+            });
+        });
+    </script>
+}

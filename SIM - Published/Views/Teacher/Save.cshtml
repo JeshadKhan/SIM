@@ -1,0 +1,176 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    List<Designation> listOfDesignations = ViewBag.Designations;
+    List<Department> listOfDepartment = ViewBag.Departments;
+    Teacher teacher = ViewBag.Teacher;
+
+    if (teacher != null)
+    {
+        ViewBag.Title = "Update Teacher";
+    }
+    else
+    {
+        ViewBag.Title = "Save Teacher";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (teacher != null){ @("Update");}else{ @("Save");} Teacher</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="Name" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Name" name="Name" placeholder="Name" type="text" value="@if (teacher != null){ @teacher.Name;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.NameErrorMessage)){ @ViewBag.NameErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Address" class="col-lg-2 control-label">Address</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Address" name="Address" placeholder="Address" type="text" value="@if (teacher != null){ @teacher.Address;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.AddressErrorMessage)){ @ViewBag.AddressErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Email" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Email" name="Email" placeholder="Email" type="text" value="@if (teacher != null){ @teacher.Email;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.EmailErrorMessage)){ @ViewBag.EmailErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ContactNo" class="col-lg-2 control-label">ContactNo</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="ContactNo" name="ContactNo" placeholder="ContactNo" type="text" value="@if (teacher != null){ @teacher.ContactNo;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ContactNoErrorMessage)){ @ViewBag.ContactNoErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="DesignationId" class="col-lg-2 control-label">Designation</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="DesignationId" name="DesignationId">
+                        <option value="">--Select--</option>
+                        @if (listOfDesignations != null)
+                        {
+                            foreach (Designation designation in listOfDesignations)
+                            {
+                                if (teacher != null)
+                                {
+                                    if (designation.Id == teacher.DesignationId)
+                                    {
+                                        <option value="@designation.Id" selected>@designation.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@designation.Id">@designation.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@designation.Id">@designation.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DesignationErrorMessage)){ @ViewBag.DesignationErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="DepartmentId" class="col-lg-2 control-label">Department</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="DepartmentId" name="EDepartmentId">
+                        <option value="">--Select--</option>
+                        @if (listOfDepartment != null)
+                        {
+                            foreach (Department dept in listOfDepartment)
+                            {
+                                if (teacher != null)
+                                {
+                                    if (dept.Id == teacher.DepartmentId)
+                                    {
+                                        <option value="@Security.Encrypt(@dept.Id.ToString())" selected>@dept.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(@dept.Id.ToString())">@dept.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(@dept.Id.ToString())">@dept.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DepartmentErrorMessage)){ @ViewBag.DepartmentErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CreditToBeTaken" class="col-lg-2 control-label">Credit To Be Taken</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="CreditToBeTaken" name="CreditToBeTaken" placeholder="CreditToBeTaken" type="text" value="@if (teacher != null){ @teacher.CreditToBeTaken;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CreditToBeTakenErrorMessage)){ @ViewBag.CreditToBeTakenErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (teacher != null){ @("Update");}else{ @("Save");}</button>
+                </div>
+            </div>
+            @if (teacher != null) { @Html.Hidden("EId", Security.Encrypt(@teacher.Id.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myForm").validate({
+                rules: {
+                    Name: "required",
+                    Address: "required",
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    ContactNo: "required",
+                    CreditToBeTaken: {
+                        required: true,
+                        number: true
+                    }
+                },
+
+                messages: {
+                    Name: "Please provide name.",
+                    Address: "Please provide address.",
+                    Email: {
+                        required: "Please provide email.",
+                        email: "Invelid email."
+                    },
+                    ContactNo: "Please provide conatact number.",
+                    CreditToBeTaken: {
+                        required: "Please provide credit to be taken.",
+                        number: "Credit should be numeric."
+                    }
+                }
+            });
+        });
+    </script>
+}

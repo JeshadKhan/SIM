@@ -1,0 +1,44 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@{
+    ViewBag.Title = "LogIn";
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        <fieldset>
+            <legend>Login</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="Email" class="col-lg-2 control-label">Email or Username</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Email" name="Email" placeholder="Email or Username" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Password" class="col-lg-2 control-label">Password</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Password" name="Password" placeholder="Password" type="password" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">LogIn</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

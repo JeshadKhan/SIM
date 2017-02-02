@@ -1,0 +1,29 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "About";
+    Setting setting = ViewBag.Settings;
+}
+
+<div class="well bs-component">
+    <fieldset>
+        <legend>About</legend>
+        <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+        <hr />
+        <div class="text-justify">@if (!string.IsNullOrEmpty(@setting.AboutUs)){ @setting.AboutUs;}</div>
+    </fieldset>
+</div>

@@ -1,0 +1,80 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "Allocate Classroom List";
+    List<AllocateClassroom> listOfAllocateClassroom = ViewBag.AllocateClassroomList;
+}
+
+<div class="well bs-component">
+    <fieldset>
+        <legend>Allocate Classroom List</legend>
+        <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+        <table id="tbl" class="table table-responsive table-striped table-header-block">
+            <thead>
+                <tr>
+                    <th>Room No.</th>
+                    <th>Day</th>
+                    <th style="width: 100px;">Time</th>
+                    <th>Duration</th>
+                    <th>Allocation Date</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    @if (Security.IsSessionExist())
+                    {
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (listOfAllocateClassroom != null)
+                {
+                    foreach (AllocateClassroom allocateClassroom in listOfAllocateClassroom)
+                    {
+                        <tr>
+                            <td>@allocateClassroom.RoomNo</td>
+                            <td>@allocateClassroom.Day</td>
+                            <td>@allocateClassroom.Time</td>
+                            <td>@allocateClassroom.TimeDuration</td>
+                            <td>@allocateClassroom.AllocationDate.ToShortDateString()</td>
+                            <td>@allocateClassroom.CourseCode</td>
+                            <td>@allocateClassroom.CourseName</td>
+                            <td>@allocateClassroom.DepartmentName</td>
+                            <td>@allocateClassroom.Status</td>
+                            @if (Security.IsSessionExist())
+                            {
+                                <td class="text-center">@Html.ActionLink("Edit", "Allocate", new { id = Security.Encrypt(@allocateClassroom.Id.ToString()), did = Security.Encrypt(@allocateClassroom.DepartmentId.ToString()), cid = Security.Encrypt(@allocateClassroom.CourseId.ToString()) }, new { @class = "btn btn-success" })</td>
+                                <td class="text-center">@Html.ActionLink("Delete", "DeleteAllocateClassroom", new { id = Security.Encrypt(@allocateClassroom.Id.ToString()), did = Security.Encrypt(@allocateClassroom.DepartmentId.ToString()), cid = Security.Encrypt(@allocateClassroom.CourseId.ToString()) }, new { @class = "btn btn-danger" })</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#tbl').DataTable();
+        });
+    </script>
+}

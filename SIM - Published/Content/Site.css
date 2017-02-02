@@ -1,0 +1,157 @@
+﻿/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http://opensource.org/licenses/MIT>
+*/
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Custom CSS */
+.error {
+    color: #E08283;
+}
+
+.success {
+    color: #2ECC71;
+}
+
+table.table {
+    color: #000 !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(2n) {
+    background-color: #808080;
+}
+
+table.table-header-block thead tr {
+    background-color: #ccc;
+    font-weight: bold;
+}
+
+    table.table-header-block thead tr th.text-center, table.table-header-block tbody tr td.text-center {
+        width: 50px !important;
+    }
+
+table.table tbody tr {
+    color: #fff !important;
+}
+
+.logo {
+    max-width: 30px;
+    max-height: 30px;
+    vertical-align: middle;
+    margin: 0 auto;
+    margin-top: -5px;
+}
+
+.text-user {
+    padding-top: 3px;
+    font-weight: bold;
+    color: #2B3E50 !important;
+}
+
+.ptb20 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.contact {
+    margin-top: 20px;
+}
+
+    .contact p > i {
+        margin-right: 10px;
+    }
+
+.social-links {
+    margin-top: 30px;
+}
+
+    .social-links a {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: normal;
+        line-height: 2.4em;
+        color: #ffffff !important;
+        padding: 0;
+        margin: 5px;
+        outline: none;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+.img-basic-view {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    margin: 10px;
+}
+
+.img-slider-view {
+    width: 200px;
+    height: 140px;
+    border: 1px solid #fff;
+}
+
+.img-slider-list {
+    width: 100px;
+    height: 70px;
+}
+
+hr {
+    margin-top: 0;
+}
+
+.dataTable {
+    border: 1px solid #ccc !important;
+}
+
+.dataTables_length label, .dataTables_filter label {
+    color: #fff;
+}
+
+.dataTables_length select {
+    color: #333;
+}
+
+.dataTables_info {
+    color: #fff !important;
+}

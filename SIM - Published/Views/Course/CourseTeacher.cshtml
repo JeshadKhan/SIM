@@ -1,0 +1,329 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    List<Department> listOfDepartment = ViewBag.Departments;
+    List<Course> listOfCourse = ViewBag.Courses;
+    CourseTeacher courseTeacher = ViewBag.CourseTeacher;
+
+    if (courseTeacher != null)
+    {
+        ViewBag.Title = "Update Course Teacher";
+    }
+    else
+    {
+        ViewBag.Title = "Assign Course Teacher";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (courseTeacher != null){ @("Update Course Teacher");}else{ @("Course Assign to Teacher");}</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="DepartmentId" class="col-lg-2 control-label">Department</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="DepartmentId" name="EDepartmentId">
+                        <option value="">--Select--</option>
+                        @if (listOfDepartment != null)
+                        {
+                            foreach (Department dept in listOfDepartment)
+                            {
+                                if (courseTeacher != null)
+                                {
+                                    if (courseTeacher.DepartmentId == dept.Id)
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())" selected>@dept.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DepartmentErrorMessage)){ @ViewBag.DepartmentErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="TeacherId" class="col-lg-2 control-label">Teacher</label>
+                <div class="col-lg-10">
+                    @if (courseTeacher != null)
+                    {
+                        <select class="form-control" id="TeacherId" name="ETeacherId">
+                            <option value="@Security.Encrypt(courseTeacher.TeacherId.ToString())">@courseTeacher.TeacherName</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="TeacherId" name="ETeacherId">
+                            <option value="">--Select--</option>
+                        </select>
+                    }
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.TeacherErrorMessage)){ @ViewBag.TeacherErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CreditToBeTaken" class="col-lg-2 control-label">Credit To Be Taken</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="CreditToBeTaken" name="CreditToBeTaken" readonly="readonly" type="text" value="@if (courseTeacher != null){ @courseTeacher.TeacherCreditToBeTaken;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CreditToBeTakenErrorMessage)){ @ViewBag.CreditToBeTakenErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="RemainingCredit" class="col-lg-2 control-label">Remaining Credit</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="RemainingCredit" name="RemainingCredit" readonly="readonly" type="text" value="@if (courseTeacher != null){ @courseTeacher.TeacherRemainingCredit;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.RemainingCreditErrorMessage)){ @ViewBag.RemainingCreditErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CourseId" class="col-lg-2 control-label">Course Code</label>
+                <div class="col-lg-10">
+                    @if (courseTeacher != null)
+                    {
+                        <select class="form-control" id="CourseId" name="ECourseId" disabled>
+                            <option value="@Security.Encrypt(courseTeacher.CourseId.ToString())">@courseTeacher.CourseCode</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="CourseId" name="ECourseId">
+                            <option value="">--Select--</option>
+                            @if (listOfCourse != null)
+                            {
+                                foreach (Course course in listOfCourse)
+                                {
+                                    <option value="@Security.Encrypt(course.Id.ToString())">@course.Code</option>
+                                }
+                            }
+                        </select>
+                    }
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CourseErrorMessage)){ @ViewBag.CourseErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Name" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Name" name="Name" readonly="readonly" type="text" value="@if (courseTeacher != null){ @courseTeacher.CourseName;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.NameErrorMessage)){ @ViewBag.NameErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CourseCredit" class="col-lg-2 control-label">Credit</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="CourseCredit" name="CourseCredit" readonly="readonly" type="text" value="@if (courseTeacher != null){ @courseTeacher.CourseCredit;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CreditErrorMessage)){ @ViewBag.CreditErrorMessage;}</span>
+                </div>
+            </div>
+            @if (courseTeacher != null)
+            {
+                <div class="form-group">
+                    <label for="Status" class="col-lg-2 control-label">Assign</label>
+                    <div class="col-lg-10">
+                        @if (courseTeacher.CourseAssignStatus)
+                        {
+                            <input type="checkbox" class="form-control" id="Status" name="Status" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="form-control" id="Status" name="Status" />
+                        }
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary" onclick="altertMessage();">@if (courseTeacher != null){ @("Update");}else{ @("Assign");}</button>
+                </div>
+            </div>
+            @if (courseTeacher != null) { @Html.Hidden("EId", Security.Encrypt(@courseTeacher.Id.ToString()).ToString());}
+            @*@if (courseTeacher != null) { @Html.Hidden("ETeacherId", Security.Encrypt(@courseTeacher.TeacherId.ToString()).ToString());}*@
+            @if (courseTeacher != null) { @Html.Hidden("ECourseId", Security.Encrypt(@courseTeacher.CourseId.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myForm").validate({
+                rules: {
+                    DepartmentId: "required",
+                    TeacherId: "required",
+                    CourseId: "required"
+                },
+
+                messages: {
+                    DepartmentId: "Please select department.",
+                    TeacherId: "Please select teacher.",
+                    CourseId: "Please select course."
+                }
+            });
+
+
+            $("#DepartmentId").change(function () {
+                var deptId = $("#DepartmentId").val();
+                $("#TeacherId").empty();
+                var json = { departmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetTeacherByDepartmentId", "Course")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $("#TeacherId").append('<option value="">--Select--</option>');
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#TeacherId").append('<option value=' + value.EId + '>' + value.Name + '</option>');
+                        });
+                    }
+                });
+            });
+
+            @*$("#DepartmentId").change(function () {
+                var deptId = $("#DepartmentId").val();
+                $("#CourseId").empty();
+                var json = { departmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCourseByDepartmentId", "Course")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $("#CourseId").append('<option value="">--Select--</option>');
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#CourseId").append('<option value=' + value.Id + '>' + value.Code + '</option>');
+                        });
+                    }
+                });
+            });*@
+
+            $("#DepartmentId").change(function () {
+                //$("#CreditToBeTaken").empty();
+                //$("#RemainingCredit").empty();
+                //$("#Name").empty();
+                //$("#CourseCredit").empty();
+
+                $("#CreditToBeTaken").val('');
+                $("#RemainingCredit").val('');
+                //$("#Name").val('');
+                //$("#CourseCredit").val('');
+            });
+
+
+            $("#TeacherId").change(function () {
+                var tId = $("#TeacherId").val();
+                $("#CreditToBeTaken").empty();
+                $("#RemainingCredit").empty();
+                var json = { teacherId: tId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetTeacherByTeacherId", "Course")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#CreditToBeTaken").val(value.CreditToBeTaken);
+                            $("#RemainingCredit").val(value.RemainingCredit);
+                        });
+                    }
+                });
+            });
+
+
+            $("#CourseId").change(function () {
+                var cId = $("#CourseId").val();
+                $("#Name").empty();
+                $("#CourseCredit").empty();
+                var json = { courseId: cId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCourseByCourseId", "Course")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#Name").val(value.Name);
+                            $("#CourseCredit").val(value.Credit);
+                        });
+                    }
+                });
+            });
+
+
+            function altertMessage() {
+                var creditRemaining = $("#RemainingCredit").val();
+                var courseCredit = document.getElementById("CourseCredit").value;
+                if (parseInt(courseCredit) <= parseInt(creditRemaining)) {
+                    var id = $("#TeacherId").val();
+                    var courseId = $("#CourseId").val();
+                    var credit = $("#CourseCredit").val();
+                    var params = { TeacherId: id, CourseId: courseId, CourseCredit: credit };
+
+                    $.ajax({
+                        url: "../Course/CourseTeacher",
+                        data: params,
+                        type: "POST",
+                        success: function (result) {
+                            alert("Course Assigned.");
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+                }
+                else if (parseInt(courseCredit) > parseInt(creditRemaining)) {
+                    var userChoice = confirm("Credit Assinging Limit Acceed!!!!! Do You Want to Continue?");
+                    if (userChoice === true) {
+                        var id = $("#TeacherId").val();
+                        var courseId = $("#CourseId").val();
+                        var credit = $("#CourseCredit").val();
+                        var params = { TeacherId: id, CourseId: courseId, CourseCredit: credit };
+
+                        $.ajax({
+                            url: "../Course/CourseTeacher",
+                            data: params,
+                            type: "POST",
+                            success: function (result) {
+                                alert("Course Assigned.");
+                            },
+                            error: function (err) {
+                                alert(err);
+                            }
+                        });
+                    } else {
+                        return;
+                    }
+                }
+            }
+        });
+    </script>
+}

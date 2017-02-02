@@ -1,0 +1,165 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "Save";
+    List<Department> listOfDepartment = ViewBag.Departments;
+    List<Semester> listOfSemester = ViewBag.Semesters;
+    Course course = ViewBag.Course;
+
+    if (course != null)
+    {
+        ViewBag.Title = "Update Course";
+    }
+    else
+    {
+        ViewBag.Title = "Save Course";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (course != null){ @("Update");}else{ @("Save");} Course</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="Code" class="col-lg-2 control-label">Code</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Code" name="Code" placeholder="Code" type="text" value="@if (course != null){ @course.Code;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CodeErrorMessage)){ @ViewBag.CodeErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Name" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Name" name="Name" placeholder="Name" type="text" value="@if (course != null){ @course.Name;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.NameErrorMessage)){ @ViewBag.NameErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Credit" class="col-lg-2 control-label">Credit</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Credit" name="Credit" placeholder="Credit" type="text" value="@if (course != null){ @course.Credit;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CreditErrorMessage)){ @ViewBag.CreditErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Description" class="col-lg-2 control-label">Description</label>
+                <div class="col-lg-10">
+                    <textarea class="form-control" id="Description" name="Description" placeholder="Description" type="text">@if (course != null){ @course.Description;}</textarea><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DescriptionErrorMessage)){ @ViewBag.DescriptionErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="DepartmentId" class="col-lg-2 control-label">Department</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="DepartmentId" name="EDepartmentId">
+                        <option value="">--Select--</option>
+                        @if (listOfDepartment != null)
+                        {
+                            foreach (Department dept in listOfDepartment)
+                            {
+                                if (course != null)
+                                {
+                                    if (dept.Id == course.DepartmentId)
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())" selected>@dept.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DepartmentErrorMessage)){ @ViewBag.DepartmentErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="SemesterId" class="col-lg-2 control-label">Semester</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="SemesterId" name="ESemesterId">
+                        <option value="">--Select--</option>
+                        @if (listOfSemester != null)
+                        {
+                            foreach (Semester semester in listOfSemester)
+                            {
+                                if (course != null)
+                                {
+                                    if (semester.Id == course.SemesterId)
+                                    {
+                                        <option value="@Security.Encrypt(semester.Id.ToString())" selected>@semester.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(semester.Id.ToString())">@semester.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(semester.Id.ToString())">@semester.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.SemesterErrorMessage)){ @ViewBag.SemesterErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (course != null){ @("Update");}else{ @("Save");}</button>
+                </div>
+            </div>
+            @if (course != null) { @Html.Hidden("EId", Security.Encrypt(@course.Id.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myForm").validate({
+                rules: {
+                    Code: "required",
+                    Name: "required",
+                    Credit: {
+                        required: true,
+                        number: true
+                    },
+                    DepartmentId: "required",
+                    SemesterId: "required"
+                },
+
+                messages: {
+                    Code: "Please provide code.",
+                    Name: "Please provide name.",
+                    Credit: {
+                        required: "Please provide credit.",
+                        number: "Credit should be numeric value."
+                    },
+                    DepartmentId: "Please provide department.",
+                    SemesterId: "Please provide semester."
+                }
+            });
+        });
+    </script>
+}

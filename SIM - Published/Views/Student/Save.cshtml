@@ -1,0 +1,176 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    List<Department> listOfDepartment = ViewBag.Departments;
+    Student student = ViewBag.Student;
+
+    if (student != null)
+    {
+        ViewBag.Title = "Update Student";
+    }
+    else
+    {
+        ViewBag.Title = "Register Student";
+    }
+}
+
+<div class="well bs-component">
+    @Html.AntiForgeryToken()
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (student != null){ @("Update");}else{ @("Register");} Student</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="Name" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Name" name="Name" placeholder="Name" type="text" value="@if (student != null){ @student.Name;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span><span class="error">@ViewBag.NameErrorMessage</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Email" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Email" name="Email" placeholder="Email" type="text" value="@if (student != null){ @student.Email;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span><span class="error">@ViewBag.EmailErrorMessage</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ContactNo" class="col-lg-2 control-label">Contact No</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="ContactNo" name="ContactNo" placeholder="ContactNo" type="text" value="@if (student != null){ @student.ContactNo;}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span><span class="error">@ViewBag.ContactNoErrorMessage</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Date" class="col-lg-2 control-label">Date</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Date" name="Date" placeholder="Date" type="text" value="@if (student != null){ @student.Date.ToShortDateString();}else{ @ViewBag.Today}" readonly="readonly" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span><span class="error">@ViewBag.DateErrorMessage</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Address" class="col-lg-2 control-label">Address</label>
+                <div class="col-lg-10">
+                    <textarea class="form-control" id="Address" name="Address" placeholder="Address" type="text">@if (student != null){ @student.Address;}</textarea><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span><span class="error">@ViewBag.AddressErrorMessage</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="DepartmentId" class="col-lg-2 control-label">Department</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="DepartmentId" name="EDepartmentId">
+                        <option value="">--Select--</option>
+                        @if (listOfDepartment != null)
+                        {
+                            foreach (Department dept in listOfDepartment)
+                            {
+                                if (student != null)
+                                {
+                                    if (dept.Id == student.DepartmentId)
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())" selected>@dept.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DepartmentErrorMessage)){ @ViewBag.DepartmentErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (student != null){ @("Update");}else{ @("Register");}</button>
+                </div>
+            </div>
+
+            <div class="form-group" style="visibility: hidden">
+                <label for="DepartmentCode" class="col-lg-2 control-label">Department Code</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="DepartmentCode" name="DepartmentCode" type="text" value="@if (student != null){ @("0");}" readonly="readonly" />
+                </div>
+            </div>
+            @if (student != null) { @Html.Hidden("EId", Security.Encrypt(@student.Id.ToString()).ToString());}
+            @if (student != null) { @Html.Hidden("ERegNo", Security.Encrypt(@student.RegNo.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.standalone.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#Date").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $("#myForm").validate({
+                rules: {
+                    Name: "required",
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    ContactNo: "required",
+                    DepartmentId: "required"
+                },
+
+                messages: {
+                    Name: "Please provide name.",
+                    Email: {
+                        required: "Please provide email.",
+                        email: "Invalid email."
+                    },
+                    ContactNo: "Please provide contact number.",
+                    DepartmentId: "Please provide department."
+                }
+            });
+
+
+            $("#DepartmentId").change(function () {
+                var deptId = $("#DepartmentId").val();
+                $("#DepartmentCode").empty();
+                var json = { departmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDepartmentByDepartmentId", "Student")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#DepartmentCode").val(value.Code)
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

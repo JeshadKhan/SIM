@@ -1,0 +1,77 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "Student Result List";
+    List<Student> listOfStudent = ViewBag.StudentResultList;
+}
+
+<div class="well bs-component">
+    <fieldset>
+        <legend>Student Result List</legend>
+        <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+        <table id="tbl" class="table table-responsive table-striped table-header-block">
+            <thead>
+                <tr>
+                    <th>Registration No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Grade</th>
+                    @if (Security.IsSessionExist())
+                    {
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (listOfStudent != null)
+                {
+                    foreach (Student student in listOfStudent)
+                    {
+                        <tr>
+                            <td>@student.RegNo</td>
+                            <td>@student.Name</td>
+                            <td>@student.Email</td>
+                            <td>@student.DepartmentName</td>
+                            <td>@student.CourseCode</td>
+                            <td>@student.CourseName</td>
+                            <td>@student.Grade</td>
+                            @if (Security.IsSessionExist())
+                            {
+                                <td class="text-center">@Html.ActionLink("Edit", "StudentResult", new { id = @Security.Encrypt(@student.Id.ToString()), sid = @Security.Encrypt(@student.StudentId.ToString()), cid = @Security.Encrypt(@student.CourseId.ToString()) }, new { @class = "btn btn-success" })</td>
+                                <td class="text-center">@Html.ActionLink("Delete", "DeleteStudentResult", new { id = @Security.Encrypt(@student.Id.ToString()), sid = @Security.Encrypt(@student.StudentId.ToString()), cid = @Security.Encrypt(@student.CourseId.ToString()) }, new { @class = "btn btn-danger" })</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#tbl').DataTable();
+        });
+    </script>
+}
+

@@ -1,0 +1,180 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "Basic Settings";
+    Setting setting = ViewBag.Settings;
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>Basic Settings</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+            <div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
+                    <li role="presentation"><a href="#contact-info" aria-controls="contact-info" role="tab" data-toggle="tab">Contact Information</a></li>
+                    <li role="presentation"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About Us</a></li>
+                    <li role="presentation"><a href="#social-links" aria-controls="social-links" role="tab" data-toggle="tab">Social Links</a></li>
+                </ul>
+                <div class="tab-content ptb20">
+                    @* General *@
+                    <div role="tabpanel" class="tab-pane active" id="general">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="InstituteFullName" class="col-lg-2 control-label">Institute Full Name</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="InstituteFullName" name="InstituteFullName" placeholder="Institute Full Name - Ex: Simple Institute Management" type="text" value="@setting.InstituteFullName" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InstituteShortName" class="col-lg-2 control-label">Institute Logo Name (Short)</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="InstituteShortName" name="InstituteShortName" placeholder="Institute Logo Name - Ex: SIM" type="text" value="@setting.InstituteShortName" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="BrandDescription" class="col-lg-2 control-label">Brand Description</label>
+                                    <div class="col-lg-10">
+                                        <textarea class="form-control" id="BrandDescription" name="BrandDescription" placeholder="Brand Description">@setting.Description</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="BrandLogoFile" class="col-lg-2 control-label">Logo</label>
+                                    <div class="col-lg-10">
+                                        <input id="BrandLogoFile" name="BrandLogoFile" type="file" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="BrandFaviconFile" class="col-lg-2 control-label">Title Icon (favicon)</label>
+                                    <div class="col-lg-10">
+                                        <input id="BrandFaviconFile" name="BrandFaviconFile" type="file" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <img class="img-basic-view" src="@setting.BrandLogo" />
+                                </div>
+                                <div class="row">
+                                    <img class="img-basic-view" src="@setting.BrandFavicon" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Contact Info *@
+                    <div role="tabpanel" class="tab-pane" id="contact-info">
+                        <div class="form-group">
+                            <label for="Location" class="col-lg-2 control-label">Address</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="Location" name="Location" placeholder="Address" type="text" value="@setting.Location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email" class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="Email" name="Email" placeholder="Email" type="email" value="@setting.Email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="MobileNumber" class="col-lg-2 control-label">Mobile Number</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="MobileNumber" name="MobileNumber" placeholder="Mobile Number" type="text" value="@setting.MobileNumber">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="PhoneNumber" class="col-lg-2 control-label">Telephone Number</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Telephone Number" type="text" value="@setting.PhoneNumber">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Website" class="col-lg-2 control-label">Official Website</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="Website" name="Website" placeholder="Website" type="text" value="@setting.Website">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="GoogleMap" class="col-lg-2 control-label">Google Map</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="GoogleMap" name="GoogleMap" placeholder="Google Map Link" type="text" value="@setting.GoogleMap">
+                            </div>
+                        </div>
+                    </div>
+
+                    @* About *@
+                    <div role="tabpanel" class="tab-pane" id="about">
+                        <div class="form-group">
+                            <label for="AboutUs" class="col-lg-2 control-label">About</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control" id="AboutUs" name="AboutUs" rows="10">@setting.AboutUs</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Social Links *@
+                    <div role="tabpanel" class="tab-pane" id="social-links">
+                        <div class="form-group">
+                            <label for="FacebookLink" class="col-lg-2 control-label">Facebook</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="FacebookLink" name="FacebookLink" placeholder="Facebook" type="text" value="@setting.FacebookLink">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="GooglePlusLink" class="col-lg-2 control-label">Google Plus</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="GooglePlusLink" name="GooglePlusLink" placeholder="Google Plus" type="text" value="@setting.GooglePlusLink">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="TwitterLink" class="col-lg-2 control-label">Twitter</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="TwitterLink" name="TwitterLink" placeholder="Twitter" type="text" value="@setting.TwitterLink">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="YoutTubeLink" class="col-lg-2 control-label">YouTube</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="YoutTubeLink" name="YoutTubeLink" placeholder="YouTube" type="text" value="@setting.YoutTubeLink">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="LinkedInLink" class="col-lg-2 control-label">LinkedIn</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="LinkedInLink" name="LinkedInLink" placeholder="LinkedIn" type="text" value="@setting.LinkedInLink">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="GitHubLink" class="col-lg-2 control-label">GitHub</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="GitHubLink" name="GitHubLink" placeholder="GitHub" type="text" value="@setting.GitHubLink">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary">Update Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

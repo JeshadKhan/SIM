@@ -1,0 +1,49 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "Contact";
+    Setting setting = ViewBag.Settings;
+}
+
+<div class="well bs-component">
+    <fieldset>
+        <legend>Contact</legend>
+        <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+        <hr />
+        <div class="row">
+            <div class="col-md-4 contact">
+                <p><i class="glyphicon glyphicon-map-marker"></i>@if (!string.IsNullOrEmpty(@setting.Location)){ @setting.Location;}</p>
+                <p><i class="glyphicon glyphicon-phone"></i>@if (!string.IsNullOrEmpty(@setting.MobileNumber)){ @setting.MobileNumber;}</p>
+                <p><i class="glyphicon glyphicon-phone-alt"></i>@if (!string.IsNullOrEmpty(@setting.PhoneNumber)){ @setting.PhoneNumber;}</p>
+                <p><i class="glyphicon glyphicon-envelope"></i>@if (!string.IsNullOrEmpty(@setting.Email)){ @setting.Email;}</p>
+                <p><i class="glyphicon glyphicon-globe"></i>@if (!string.IsNullOrEmpty(@setting.Website)){ @setting.Website;}</p>
+                <hr />
+                <p class="text-center social-links">
+                    <a href="@if (!string.IsNullOrEmpty(@setting.FacebookLink)){ @setting.FacebookLink;}" target="_blank" title="Facebook" style="background-color:#3b5998"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="@if (!string.IsNullOrEmpty(@setting.GooglePlusLink)){ @setting.GooglePlusLink;}" target="_blank" title="Google Plus" style="background-color:#dd4b39"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                    <a href="@if (!string.IsNullOrEmpty(@setting.TwitterLink)){ @setting.TwitterLink;}" target="_blank" title="Twitter" style="background-color:#00aced"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="@if (!string.IsNullOrEmpty(@setting.YoutTubeLink)){ @setting.YoutTubeLink;}" target="_blank" title="YoutTube" style="background-color:#bb0000"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                    <a href="@if (!string.IsNullOrEmpty(@setting.LinkedInLink)){ @setting.LinkedInLink;}" target="_blank" title="LinkedIn" style="background-color:#007bb6"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="@if (!string.IsNullOrEmpty(@setting.GitHubLink)){ @setting.GitHubLink;}" target="_blank" title="GitHub" style="background-color:#333333"><i class="fa fa-github" aria-hidden="true"></i></a>
+                </p>
+            </div>
+            <div class="col-md-8">
+                <iframe src="@if (!string.IsNullOrEmpty(@setting.GoogleMap)){ @setting.GoogleMap;}" width="100%" height="300" frameborder="0" style="border: 0"></iframe>
+            </div>
+        </div>
+    </fieldset>
+</div>

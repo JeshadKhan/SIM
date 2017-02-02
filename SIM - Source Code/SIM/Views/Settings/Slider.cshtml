@@ -1,0 +1,103 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    ViewBag.Title = "Slider Settings";
+    List<Setting> listOfSettings = ViewBag.SliderSettings;
+    Setting sliderImageSettings = ViewBag.SliderImageSettings;
+}
+
+<div class="well bs-component">
+    @using (Html.BeginForm("Slider", "Settings", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", @id = "myForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>Slider Settings</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="ImageFile" class="col-lg-2 control-label">Image</label>
+                        <div class="col-lg-10">
+                            <input id="ImageFile" name="ImageFile" type="file" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Title" class="col-lg-2 control-label">Title</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="Title" name="Title" placeholder="Title" type="text" value="@if (sliderImageSettings != null){ @sliderImageSettings.Title;}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-lg-2 control-label">Description</label>
+                        <div class="col-lg-10">
+                            <textarea class="form-control" id="Description" name="Description" placeholder="Description">@if (sliderImageSettings != null){ @sliderImageSettings.Description;}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary">@if (sliderImageSettings != null){ @("Update");}else{ @("Add");}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @if (sliderImageSettings != null)
+                    {
+                        <img class="img-slider-view" src="@sliderImageSettings.Image" alt="@sliderImageSettings.Title" />
+                        @Html.Hidden("EId", Security.Encrypt(@sliderImageSettings.Id.ToString()).ToString())
+                    }
+                </div>
+            </div>            
+
+            <table id="tbl" class="table table-responsive table-striped table-header-block">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (listOfSettings != null)
+                    {
+                        foreach (Setting sett in listOfSettings)
+                        {
+                            <tr>
+                                <td>@sett.Title</td>
+                                <td>@sett.Description</td>
+                                <td><img class="img-slider-list" src="@sett.Image" alt="@sett.Title" /></td>
+                                <td class="text-center">@Html.ActionLink("Edit", "Slider", new { id = Security.Encrypt(@sett.Id.ToString()).ToString() }, new { @class = "btn btn-success" })</td>
+                                <td class="text-center">@Html.ActionLink("Delete", "DeleteSliderImage", new { id = Security.Encrypt(@sett.Id.ToString()).ToString() }, new { @class = "btn btn-danger" })</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+    }
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#tbl').DataTable();
+        });
+    </script>
+}

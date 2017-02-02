@@ -1,0 +1,248 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    List<Department> listOfDepartment = ViewBag.Departments;
+    List<Classroom> listOfRoomNo = ViewBag.Classroom;
+    AllocateClassroom allocateClassroom = ViewBag.AllocateClassroom;
+    Dictionary<string, string> day = ViewBag.Day;
+
+    if (allocateClassroom != null)
+    {
+        ViewBag.Title = "Update Allocate Classroom";
+    }
+    else
+    {
+        ViewBag.Title = "Save Allocate Classroom";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (allocateClassroom != null){ @("Update");} Allocate Classroom</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="DepartmentId" class="col-lg-2 control-label">Department</label>
+                <div class="col-lg-10">
+                    @if (allocateClassroom != null)
+                    {
+                        <select class="form-control" id="DepartmentId" name="EDepartmentId" disabled>
+                            <option value="@Security.Encrypt(@allocateClassroom.CourseId.ToString())" selected>@allocateClassroom.CourseCode</option>
+                            @if (listOfDepartment != null)
+                            {
+                                foreach (Department dept in listOfDepartment)
+                                {
+                                    if (dept.Id == allocateClassroom.DepartmentId)
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())" selected>@dept.Name</option>
+                                    }
+                                    @*else
+                                    {
+                                        <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                    }*@
+                                }
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="DepartmentId" name="EDepartmentId">
+                            <option value="">--Select--</option>
+                            @if (listOfDepartment != null)
+                            {
+                                foreach (Department dept in listOfDepartment)
+                                {
+                                    <option value="@Security.Encrypt(dept.Id.ToString())">@dept.Name</option>
+                                }
+                            }
+                        </select>
+                    }
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DepartmentErrorMessage)){ @ViewBag.DepartmentErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CourseId" class="col-lg-2 control-label">Course</label>
+                <div class="col-lg-10">
+                    @if (allocateClassroom != null)
+                    {
+                        <select class="form-control" id="CourseId" name="ECourseId" disabled>
+                            <option value="@Security.Encrypt(@allocateClassroom.CourseId.ToString())" selected>@allocateClassroom.CourseCode</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="CourseId" name="ECourseId">
+                            <option value="">--Select--</option>
+                        </select>
+                    }
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CourseErrorMessage)){ @ViewBag.CourseErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="RoomNo" class="col-lg-2 control-label">Room No</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="RoomNo" name="ERoomNo">
+                        <option value="">--Select--</option>
+                        @if (listOfRoomNo != null)
+                        {
+                            foreach (Classroom roomNo in listOfRoomNo)
+                            {
+                                if (allocateClassroom != null)
+                                {
+                                    if (roomNo.RoomNo.ToString().ToLower() == allocateClassroom.RoomNo.ToString().ToLower())
+                                    {
+                                        <option value="@Security.Encrypt(roomNo.RoomNo.ToString())" selected>@roomNo.RoomNo</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(roomNo.RoomNo.ToString())">@roomNo.RoomNo</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(roomNo.RoomNo.ToString())">@roomNo.RoomNo</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.RoomNoErrorMessage)){ @ViewBag.RoomNoErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Day" class="col-lg-2 control-label">Day</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="Day" name="EDay">
+                        @*<option value="">--Select--</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>*@
+                        @if (day != null)
+                        {
+                            foreach (var d in day)
+                            {
+                                if (allocateClassroom != null)
+                                {
+                                    if (d.Key.ToString().ToLower() == allocateClassroom.Day.ToString().ToLower())
+                                    {
+                                        <option value="@Security.Encrypt(@d.Value.ToString())" selected>@d.Key</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(@d.Value.ToString())">@d.Key</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(@d.Value.ToString())">@d.Key</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.DayErrorMessage)){ @ViewBag.DayErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="FromTime" class="col-lg-2 control-label">From</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="FromTime" name="FromTime" value="@if (allocateClassroom != null){ @allocateClassroom.FromTime.ToShortTimeString();}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.FromTimeErrorMessage)){ @ViewBag.FromTimeErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ToTime" class="col-lg-2 control-label">To</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="ToTime" name="ToTime" value="@if (allocateClassroom != null){ @allocateClassroom.ToTime.ToShortTimeString();}" /><span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ToTimeErrorMessage)){ @ViewBag.ToTimeErrorMessage;}</span>
+                </div>
+            </div>
+            @if (allocateClassroom != null)
+            {
+                <div class="form-group">
+                    <label for="Status" class="col-lg-2 control-label">Allocate</label>
+                    <div class="col-lg-10">
+                        @if (allocateClassroom.StatusFlag)
+                        {
+                            <input type="checkbox" class="form-control" id="Status" name="Status" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="form-control" id="Status" name="Status" />
+                        }
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (allocateClassroom != null){ @("Update");}else{ @("Allocate");}</button>
+                </div>
+            </div>
+            @if (allocateClassroom != null) { @Html.Hidden("EId", Security.Encrypt(@allocateClassroom.Id.ToString()).ToString());}
+            @if (allocateClassroom != null) { @Html.Hidden("EDepartmentId", Security.Encrypt(@allocateClassroom.DepartmentId.ToString()).ToString());}
+            @if (allocateClassroom != null) { @Html.Hidden("ECourseId", Security.Encrypt(@allocateClassroom.CourseId.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#FromTime').wickedpicker();
+            $('#ToTime').wickedpicker();
+
+
+            $("#DepartmentId").change(function () {
+                var deptId = $("#DepartmentId").val();
+                $("#CourseId").empty();
+                var json = { departmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCourseByDepartmentId", "Classroom")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $("#CourseId").append('<option value="">--Select--</option>');
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#CourseId").append('<option value=' + value.EId + '>' + value.Code + '</option>');
+                        });
+                    }
+                });
+            });
+
+
+            $("#myForm").validate({
+                rules: {
+                    FromTime: "required",
+                    ToTime: "required"
+                },
+
+                messages: {
+                    FromTime: "Please provide from time.",
+                    ToTime: "Please provide to time."
+                }
+            });
+        });
+    </script>
+}

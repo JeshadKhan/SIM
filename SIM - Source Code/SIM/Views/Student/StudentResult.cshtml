@@ -1,0 +1,225 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+
+@{
+    List<Student> listOfStudent = ViewBag.Students;
+    Dictionary<string, string> grade = ViewBag.Grade;
+    List<Course> listOfCourse = ViewBag.Courses;
+    Student studentResult = ViewBag.StudentResult;
+
+    if (studentResult != null)
+    {
+        ViewBag.Title = "Update Student Result";
+    }
+    else
+    {
+        ViewBag.Title = "Submit Student Result";
+    }
+}
+
+<div class="well bs-component">
+    <form class="form-horizontal" id="myForm" role="form" method="post">
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>@if (studentResult != null){ @("Update");}else{ @("Submit");} Student Result</legend>
+            <span class="success">@if (!string.IsNullOrEmpty(@ViewBag.SaveMessage)){ @ViewBag.SaveMessage;}</span>
+            <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.ExErrorMessage)){ @ViewBag.ExErrorMessage;}</span>
+
+            <div class="form-group">
+                <label for="StudentId" class="col-lg-2 control-label">Student Reg. No.</label>
+                <div class="col-lg-10">
+                    @if (studentResult != null)
+                    {
+                        <select class="form-control" id="StudentId" name="EStudentId" disabled>
+                            <option value="@Security.Encrypt(@studentResult.StudentId.ToString())" selected>@studentResult.RegNo</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="StudentId" name="EStudentId">
+                            <option value="">--Select--</option>
+                            @if (listOfStudent != null)
+                            {
+                                foreach (Student student in listOfStudent)
+                                {
+                                    <option value="@Security.Encrypt(@student.Id.ToString())">@student.RegNo</option>
+                                }
+                            }
+                        </select>
+                    }
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.StudentErrorMessage)){ @ViewBag.StudentErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Name" class="col-lg-2 control-label">Name</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Name" name="Name" readonly="readonly" type="text" value="@if (studentResult != null){ @studentResult.Name;}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Email" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="Email" name="Email" readonly="readonly" type="text" value="@if (studentResult != null){ @studentResult.Email;}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="DepartmentName" class="col-lg-2 control-label">Department</label>
+                <div class="col-lg-10">
+                    <input class="form-control" id="DepartmentName" name="DepartmentName" readonly="readonly" type="text" value="@if (studentResult != null){ @studentResult.DepartmentName;}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CourseId" class="col-lg-2 control-label">Course Code</label>
+                <div class="col-lg-10">
+                    @if (studentResult != null)
+                    {
+                        <select class="form-control" id="CourseId" name="ECourseId" disabled>
+                            <option value="@Security.Encrypt(@studentResult.CourseId.ToString())" selected>@studentResult.CourseCode</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-control" id="CourseId" name="ECourseId">
+                            <option value="">--Select--</option>
+                        </select>
+                    }                    
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.CourseErrorMessage)){ @ViewBag.CourseErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Grade" class="col-lg-2 control-label">Grade</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="Grade" name="EGrade">
+                        <option value="">--Select--</option>
+                        @*<option value="A+">A+</option>
+                        <option value="A">A</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="B-">B-</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="C-">C-</option>
+                        <option value="D+">D+</option>
+                        <option value="D">D</option>
+                        <option value="D-">D-</option>
+                        <option value="D-">D-</option>
+                        <option value="F">F</option>
+                        <option value="AB">AB</option>*@
+                        @if (grade != null)
+                        {
+                            foreach (var grd in grade)
+                            {
+                                if (studentResult != null)
+                                {
+                                    if (grd.Key.ToString().ToLower() == studentResult.Grade.ToString().ToLower())
+                                    {
+                                        <option value="@Security.Encrypt(@grd.Value.ToString())" selected>@grd.Key</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Security.Encrypt(@grd.Value.ToString())">@grd.Key</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@Security.Encrypt(@grd.Value.ToString())">@grd.Key</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error">@if (!string.IsNullOrEmpty(@ViewBag.GradeErrorMessage)){ @ViewBag.GradeErrorMessage;}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">@if (studentResult != null){ @("Update");}else{ @("Save");}</button>
+                </div>
+            </div>
+            @if (studentResult != null) { @Html.Hidden("EId", Security.Encrypt(@studentResult.Id.ToString()).ToString());}
+            @if (studentResult != null) { @Html.Hidden("EStudentId", Security.Encrypt(@studentResult.StudentId.ToString()).ToString());}
+            @if (studentResult != null) { @Html.Hidden("ECourseId", Security.Encrypt(@studentResult.CourseId.ToString()).ToString());}
+        </fieldset>
+    </form>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                StudentId: "required",
+                CourseId: "required",
+                Grade: "required"
+            },
+
+            messages: {
+                StudentId: "Please select Student.",
+                CourseId: "Please select course.",
+                Grade: "Please select grade."
+            }
+        });
+
+
+        $("#StudentId").change(function () {
+            var sId = $("#StudentId").val();
+            $("#Name").empty();
+            $("#Email").empty();
+            $("#DepartmentName").empty();
+            //$("#DepartmentId").empty();
+            var json = { studentId: sId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStudentByStudentId", "Student")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    //alert(data);
+                    $.each(data, function (key, value) {
+                        //alert(key);
+                        $("#Name").val(value.Name);
+                        $("#Email").val(value.Email);
+                        $("#DepartmentName").val(value.DepartmentName);
+                        //$("#DepartmentId").val(value.DepartmentId);
+                    });
+                }
+            });
+        });
+
+        $("#StudentId").change(function () {
+            var sId = $("#StudentId").val();
+            $("#CourseId").empty();
+            var json = { studentId: sId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseByStudentId", "Student")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $("#CourseId").append('<option value="">--Select--</option>');
+                        $.each(data, function (key, value) {
+                            //alert(key);
+                            $("#CourseId").append('<option value="' + value.ECourseId + '">' + value.CourseCode + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

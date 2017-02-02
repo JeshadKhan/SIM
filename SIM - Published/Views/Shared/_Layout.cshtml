@@ -1,0 +1,205 @@
+﻿<!--/*
+ * Author               : Quaint Park
+ * Copyright            : © 2017 Quaint Park.
+ * Official Website     : www.quaintpark.com
+ * ------------------------------------------------------------------------------
+ * Developed By         : Jeshad Khan
+ * Profile              : www.jeshadkhan.com
+ * ------------------------------------------------------------------------------
+ * Title                : Simple Institute Management (SIM)
+ * Version              : 1.0
+ * License              : Licensed under MIT <http: />/opensource.org/licenses/MIT>
+*/-->
+
+@using SIM.Models
+@using SIM.BLL
+
+@{
+    UserManager userManager = new UserManager();
+    SessionManager session = new SessionManager();
+    SettingManager settingManager = new SettingManager();
+    Setting setting = settingManager.GetSetting();    
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@if (!string.IsNullOrEmpty(@ViewBag.Title)){ @ViewBag.Title;} - @if (!string.IsNullOrEmpty(@setting.InstituteShortName)){ @setting.InstituteShortName;} || Jeshad Khan</title>
+    
+    @if (!string.IsNullOrEmpty(@setting.BrandFavicon))
+    {
+        <link rel="icon" type="image/png" href="@setting.BrandFavicon" />
+    }
+    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @if (!string.IsNullOrEmpty(setting.BrandLogo))
+                {
+                    <a href="@Url.Action("Index", "Home")" class="navbar-brand"><span><img src="@Url.Content(setting.BrandLogo)" class="logo"></span> @if (!string.IsNullOrEmpty(@setting.InstituteShortName)){ @setting.InstituteShortName;}</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Index", "Home")" class="navbar-brand"><span><img src="" class="logo"></span> @if (!string.IsNullOrEmpty(@setting.InstituteShortName)){ @setting.InstituteShortName;}</a>
+                }
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About Us", "About", "Home")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Teacher <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Add Teacher", "Save", "Teacher")</li>
+                            }
+                            <li>@Html.ActionLink("Teacher List", "Get", "Teacher")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Student <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Add Student", "Save", "Student")</li>
+                            }
+                            <li>@Html.ActionLink("Student List", "Get", "Student")</li>
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Enroll Crouse", "EnrollCourse", "Student")</li>
+                                <li>@Html.ActionLink("Enroll Crouse List", "EnrollCourseList", "Student")</li>
+                                <li>@Html.ActionLink("Submit Result", "StudentResult", "Student")</li>
+                                <li>@Html.ActionLink("Submit Result List", "StudentResultList", "Student")</li>
+                            }
+                            <li>@Html.ActionLink("View Result", "ViewResult", "Student")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Department <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Add Department", "Save", "Department")</li>
+                            }
+                            <li>@Html.ActionLink("Department List", "Get", "Department")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classroom <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Add Classroom", "Save", "Classroom")</li>
+                            }
+                            <li>@Html.ActionLink("Classroom List", "Get", "Classroom")</li>
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Allocate Classroom", "Allocate", "Classroom")</li>
+                                <li>@Html.ActionLink("Allocate Classroom List", "AllocateList", "Classroom")</li>
+                            }
+                            <li>@Html.ActionLink("Class Schedule", "ClassSchedule", "Classroom")</li>
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Unallocate Classroom", "Unallocate", "Classroom")</li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Course <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Add Course", "Save", "Course")</li>
+                            }
+                            <li>@Html.ActionLink("Course List", "Get", "Course")</li>
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Assign Course Teacher", "CourseTeacher", "Course")</li>
+                                <li>@Html.ActionLink("Assigned Course Teacher List", "CourseTeacherList", "Course")</li>
+                            }
+                            <li>@Html.ActionLink("View Course Statics", "ViewCourseStatics", "Course")</li>
+                            @if (session.IsSessionExist())
+                            {
+                                <li>@Html.ActionLink("Unassign All Courses", "UnassignCourses", "Course")</li>
+                            }
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (session.IsSessionExist())
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Basic", "Basic", "Settings")</li>
+                                <li>@Html.ActionLink("Slider", "Slider", "Settings")</li>
+                                <li>@Html.ActionLink("Change Password", "ChangePassword", "Settings")</li>
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink("Default", "Default", "Settings")</li>
+                                <li>@Html.ActionLink("Delete", "Delete", "Settings")</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @*@Html.Partial("_LoginPartial")*@
+                @if (session.IsSessionExist())
+                {
+                    SystemUser sysuser = (SystemUser)session.Get("ActiveUser");
+                    string userName = sysuser.FullName;
+                    
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><p class="navbar-text text-user">@userName</p></li>
+                        <li>@Html.ActionLink("Logout", "LogOut", "UserAccount")</li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Login", "LogIn", "UserAccount")</li>
+                        @if (!userManager.IsUserExist())
+                        {
+                            <li>@Html.ActionLink("Register", "Register", "UserAccount")</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer class="text-center">
+            <p>&copy; @DateTime.Now.Year @if (!string.IsNullOrEmpty(@setting.InstituteFullName)){ @setting.InstituteFullName;} @if (!string.IsNullOrEmpty(@setting.InstituteShortName)){ @("(")@setting.InstituteShortName @(")");}.<br />Developed By <a href="https://github.com/JeshadKhan" target="_blank">Jeshad Khan</a><br />@setting.MobileNumber @if (!string.IsNullOrEmpty(@setting.MobileNumber)){<span>|</span>} @setting.PhoneNumber @if (!string.IsNullOrEmpty(@setting.PhoneNumber)){<span>|</span>} @setting.Email @if (!string.IsNullOrEmpty(@setting.Email) && !string.IsNullOrEmpty(@setting.Website)){<span>|</span>} @setting.Website</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatable")
+    @RenderSection("scripts", required: false)
+
+
+    @* Custom - CSS & JS *@
+    <link href="~/Content/wickedpicker.min.css" rel="stylesheet" />
+    <style type="text/css">
+        ul.wickedpicker__controls li span {
+            color: #000 !important;
+        }
+    </style>
+    <script src="~/Scripts/wickedpicker.min.js"></script>
+
+    @Styles.Render("~/Content/sitecss")
+</body>
+</html>
